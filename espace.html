@@ -679,7 +679,7 @@
   footer nav{display:flex; gap:22px; flex-wrap:wrap; font-size:.88rem;}
   .foot-bottom{padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:.78rem; font-family:'JetBrains Mono',monospace;}
 
-  @media (max-width:900px){
+  @media (max-width:1300px){
     nav.wrap{flex-wrap:wrap; height:auto; min-height:84px; row-gap:12px; padding-top:16px; padding-bottom:16px;}
     .logo{order:1;}
     .burger{order:2; margin-left:auto;}
@@ -818,6 +818,7 @@
     <div class="navlinks" id="navlinks">
       <a href="#accueil">Accueil</a>
       <a href="#formations">Formations & Coaching</a>
+      <a href="catalogue-formations.html">Catalogue formations</a>
       <a href="#prestations">Offre & Prestations</a>
       <a href="#studio">Studio Design</a>
       <a href="#livres">Livres</a>
@@ -1882,6 +1883,9 @@
         <button type="button" class="collab-tab active" id="spaceTabVisitors">Messages visiteurs <span class="chat-badge" id="visitorTabBadge" hidden>0</span></button>
         <button type="button" class="collab-tab" id="spaceTabNewsletter">Abonnés newsletter</button>
         <button type="button" class="collab-tab" id="spaceTabAdmin">Administration</button>
+        <button type="button" class="collab-tab" id="spaceTabCodes">Codes formation <span class="chat-badge" id="codesTabBadge" hidden>0</span></button>
+        <button type="button" class="collab-tab" id="spaceTabDemandes">Demandes de code <span class="chat-badge" id="demandesTabBadge" hidden>0</span></button>
+        <button type="button" class="collab-tab" id="spaceTabUtilisateurs">Utilisateurs</button>
         <a href="forum.html" target="_blank" rel="noopener" class="btn btn-ghost" id="openForumBtn" style="margin-left:auto; align-self:center;">Ouvrir le forum ↗ <span style="font-weight:400; font-size:.78rem;">(nouvel onglet)</span></a>
       </div>
 
@@ -1918,6 +1922,67 @@
           <p class="section-lede" style="margin:0 0 10px;">Les comptes marqués <strong>Admin</strong> peuvent voir et répondre aux messages visiteurs, ouvrir le forum et gérer les autres admins. Seul un admin peut promouvoir ou révoquer un autre compte.</p>
           <div class="thread-list" id="adminUserList">
             <p class="forum-empty" id="adminUserListEmpty">Aucun membre inscrit pour le moment.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="forum-layout" id="spacePanelCodes" hidden>
+        <div class="forum-panel" style="width:100%;">
+          <p class="section-lede" style="margin:0 0 10px;">Générez un code d'accès pour une formation précise. Le code donne accès au contenu de <strong>cette formation uniquement</strong> et peut être utilisé autant de fois que nécessaire par la personne à qui il est destiné, tant qu'il reste actif.</p>
+
+          <form class="modal-form" id="codeGenForm" novalidate style="max-width:520px; margin:0 0 24px;">
+            <label for="codeGenFormation" style="font-family:'Work Sans',sans-serif; font-size:.86rem; font-weight:500; color:var(--ink);">Formation concernée</label>
+            <select id="codeGenFormation" required style="width:100%; padding:12px 14px; border-radius:6px; border:1px solid var(--line); font-family:'Work Sans',sans-serif; font-size:.92rem; background:var(--white); color:var(--charcoal);">
+              <option value="" disabled selected>Choisir une formation…</option>
+              <optgroup label="Bureautique Pro">
+                <option value="Excel — Tableaux de bord">Excel — Tableaux de bord</option>
+                <option value="Word — Documents officiels">Word — Documents officiels</option>
+                <option value="PowerPoint — Présentations d'impact">PowerPoint — Présentations d'impact</option>
+              </optgroup>
+              <optgroup label="Compétences digitales">
+                <option value="Initiation aux outils du web">Initiation aux outils du web</option>
+                <option value="IA générative appliquée">IA générative appliquée</option>
+                <option value="Créer un site web avec l'IA">Créer un site web avec l'IA</option>
+                <option value="Gestion de projet en ligne">Gestion de projet en ligne</option>
+                <option value="Google Sheets">Google Sheets</option>
+                <option value="Outlook & Google Meet">Outlook & Google Meet</option>
+              </optgroup>
+              <optgroup label="Infographie et montage audiovisuel">
+                <option value="Adobe Photoshop — Retouche & création visuelle">Adobe Photoshop — Retouche & création visuelle</option>
+                <option value="Adobe Premiere Pro — Montage vidéo">Adobe Premiere Pro — Montage vidéo</option>
+              </optgroup>
+              <optgroup label="Coaching entrepreneurial">
+                <option value="Gestion & pilotage">Gestion & pilotage</option>
+                <option value="Stratégie d'entreprise">Stratégie d'entreprise</option>
+                <option value="Posture de dirigeant">Posture de dirigeant</option>
+                <option value="Community Manager">Community Manager</option>
+              </optgroup>
+            </select>
+            <input type="text" id="codeGenClient" placeholder="Nom du client (optionnel)" maxlength="120">
+            <button type="submit" class="btn btn-primary" id="codeGenSubmitBtn">Générer un nouveau code</button>
+            <span class="modal-error" id="errCodeGen">Merci de choisir une formation.</span>
+          </form>
+
+          <div class="thread-list" id="codesList">
+            <p class="forum-empty" id="codesListEmpty">Aucun code généré pour le moment.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="forum-layout" id="spacePanelDemandes" hidden>
+        <div class="forum-panel" style="width:100%;">
+          <p class="section-lede" style="margin:0 0 10px;">Demandes envoyées depuis le catalogue par des personnes intéressées par une formation. Une fois le paiement reçu (Orange Money ou autre), cliquez sur <strong>Générer le code</strong> pour préremplir le formulaire de génération avec la bonne formation et le nom du client, puis marquez la demande comme traitée.</p>
+          <div class="thread-list" id="demandesList">
+            <p class="forum-empty" id="demandesListEmpty">Aucune demande de code pour le moment.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="forum-layout" id="spacePanelUtilisateurs" hidden>
+        <div class="forum-panel" style="width:100%;">
+          <p class="section-lede" style="margin:0 0 10px;">Toutes les personnes ayant déjà reçu un code d'accès, avec leur formation et leur code. Désactivez un code pour bloquer l'accès (ex. impayé), ou réactivez-le à tout moment — le code reste le même.</p>
+          <div class="thread-list" id="utilisateursList">
+            <p class="forum-empty" id="utilisateursListEmpty">Aucun utilisateur pour le moment.</p>
           </div>
         </div>
       </div>
@@ -2730,15 +2795,36 @@
   const spaceTabVisitors = document.getElementById('spaceTabVisitors');
   const spaceTabNewsletter = document.getElementById('spaceTabNewsletter');
   const spaceTabAdmin = document.getElementById('spaceTabAdmin');
+  const spaceTabCodes = document.getElementById('spaceTabCodes');
   const spacePanelVisitors = document.getElementById('spacePanelVisitors');
   const spacePanelNewsletter = document.getElementById('spacePanelNewsletter');
   const spacePanelAdmin = document.getElementById('spacePanelAdmin');
+  const spacePanelCodes = document.getElementById('spacePanelCodes');
+  const spaceTabDemandes = document.getElementById('spaceTabDemandes');
+  const spacePanelDemandes = document.getElementById('spacePanelDemandes');
+  const demandesList = document.getElementById('demandesList');
+  const demandesTabBadge = document.getElementById('demandesTabBadge');
+  const spaceTabUtilisateurs = document.getElementById('spaceTabUtilisateurs');
+  const spacePanelUtilisateurs = document.getElementById('spacePanelUtilisateurs');
+  const utilisateursList = document.getElementById('utilisateursList');
   const newsletterList = document.getElementById('newsletterList');
   const newsletterListEmpty = document.getElementById('newsletterListEmpty');
   let unsubNewsletterList = null;
   const visitorTabBadge = document.getElementById('visitorTabBadge');
   const adminUserList = document.getElementById('adminUserList');
   const adminUserListEmpty = document.getElementById('adminUserListEmpty');
+  // ---- Codes d'accès formation (admin) ----
+  const codeGenForm = document.getElementById('codeGenForm');
+  const codeGenFormation = document.getElementById('codeGenFormation');
+  const codeGenClient = document.getElementById('codeGenClient');
+  const codeGenSubmitBtn = document.getElementById('codeGenSubmitBtn');
+  const errCodeGen = document.getElementById('errCodeGen');
+  const codesList = document.getElementById('codesList');
+  const codesListEmpty = document.getElementById('codesListEmpty');
+  let unsubCodes = null;
+  let codesCache = {};
+  let unsubDemandes = null;
+  let demandesCache = {};
 
   // ---- Messages visiteurs (staff) ----
   const visitorList = document.getElementById('visitorList');
@@ -2955,6 +3041,8 @@
         demarrerEcouteNewsletter();
         demarrerEcouteCollabChats();
         demarrerEcouteBroadcastsAdmin();
+        demarrerEcouteCodes();
+        demarrerEcouteDemandes();
         if (unsubMemberChat) { unsubMemberChat(); unsubMemberChat = null; }
         if (unsubMemberBroadcasts) { unsubMemberBroadcasts(); unsubMemberBroadcasts = null; }
       } else {
@@ -2983,6 +3071,8 @@
       if (unsubAdminUsers) { unsubAdminUsers(); unsubAdminUsers = null; }
       if (unsubAdminAdmins) { unsubAdminAdmins(); unsubAdminAdmins = null; }
       if (unsubNewsletterList) { unsubNewsletterList(); unsubNewsletterList = null; }
+      if (unsubCodes) { unsubCodes(); unsubCodes = null; }
+      if (unsubDemandes) { unsubDemandes(); unsubDemandes = null; }
       if (unsubCollabUsers) { unsubCollabUsers(); unsubCollabUsers = null; }
       if (unsubCollabChatsList) { unsubCollabChatsList(); unsubCollabChatsList = null; }
       if (unsubCollabThreadMessages) { unsubCollabThreadMessages(); unsubCollabThreadMessages = null; }
@@ -3000,14 +3090,29 @@
     spaceTabVisitors.classList.toggle('active', nom === 'visitors');
     spaceTabNewsletter.classList.toggle('active', nom === 'newsletter');
     spaceTabAdmin.classList.toggle('active', nom === 'admin');
+    if (spaceTabCodes) spaceTabCodes.classList.toggle('active', nom === 'codes');
+    if (spaceTabDemandes) spaceTabDemandes.classList.toggle('active', nom === 'demandes');
+    if (spaceTabUtilisateurs) spaceTabUtilisateurs.classList.toggle('active', nom === 'utilisateurs');
     spacePanelVisitors.hidden = nom !== 'visitors';
     spacePanelNewsletter.hidden = nom !== 'newsletter';
     spacePanelAdmin.hidden = nom !== 'admin';
+    if (spacePanelCodes) spacePanelCodes.hidden = nom !== 'codes';
+    if (spacePanelDemandes) spacePanelDemandes.hidden = nom !== 'demandes';
+    if (spacePanelUtilisateurs) spacePanelUtilisateurs.hidden = nom !== 'utilisateurs';
   }
   if (spaceTabVisitors && spaceTabNewsletter && spaceTabAdmin) {
     spaceTabVisitors.addEventListener('click', () => activerOngletEspaceAdmin('visitors'));
     spaceTabNewsletter.addEventListener('click', () => activerOngletEspaceAdmin('newsletter'));
     spaceTabAdmin.addEventListener('click', () => activerOngletEspaceAdmin('admin'));
+  }
+  if (spaceTabCodes) {
+    spaceTabCodes.addEventListener('click', () => activerOngletEspaceAdmin('codes'));
+  }
+  if (spaceTabDemandes) {
+    spaceTabDemandes.addEventListener('click', () => activerOngletEspaceAdmin('demandes'));
+  }
+  if (spaceTabUtilisateurs) {
+    spaceTabUtilisateurs.addEventListener('click', () => activerOngletEspaceAdmin('utilisateurs'));
   }
 
   // ---- Onglets Espace Administrateur (communication collaborateurs) ----
@@ -3321,6 +3426,294 @@
     unsubAdminAdmins = onValue(ref(rtdb, 'admins'), (snap) => {
       adminFlagsCache = snap.val() || {};
       renderAdminList();
+    });
+  }
+
+  // ==================== CODES D'ACCÈS FORMATION (admin) ====================
+  function genererCodeAleatoire() {
+    // Alphabet sans caractères ambigus (pas de 0/O, 1/I/L)
+    const alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+    let code = '';
+    for (let i = 0; i < 8; i++) {
+      code += alphabet[Math.floor(Math.random() * alphabet.length)];
+    }
+    return code;
+  }
+
+  if (codeGenForm) {
+    codeGenForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errCodeGen.classList.remove('show');
+      const formation = codeGenFormation.value;
+      if (!formation) {
+        errCodeGen.classList.add('show');
+        return;
+      }
+      const client = codeGenClient.value.trim();
+      codeGenSubmitBtn.disabled = true;
+      codeGenSubmitBtn.textContent = 'Génération...';
+      try {
+        let code = genererCodeAleatoire();
+        // Évite une collision improbable avec un code déjà existant
+        let essai = 0;
+        while (codesCache[code] && essai < 5) { code = genererCodeAleatoire(); essai++; }
+        await set(ref(rtdb, 'formationCodes/' + code), {
+          formation: formation,
+          client: client || null,
+          actif: true,
+          creeLe: Date.now(),
+          derniereConnexion: null,
+          connexions: 0
+        });
+        codeGenClient.value = '';
+        codeGenFormation.selectedIndex = 0;
+        notifier('Code généré', 'Le code ' + code + ' a été créé pour "' + formation + '".');
+      } catch (err) {
+        notifier('Erreur', "Impossible de générer le code. Réessayez.");
+      } finally {
+        codeGenSubmitBtn.disabled = false;
+        codeGenSubmitBtn.textContent = 'Générer un nouveau code';
+      }
+    });
+  }
+
+  function renderCodesList() {
+    if (!codesList) return;
+    codesList.innerHTML = '';
+    const codes = Object.keys(codesCache);
+    if (codes.length === 0) {
+      const p = document.createElement('p');
+      p.className = 'forum-empty';
+      p.textContent = 'Aucun code généré pour le moment.';
+      codesList.appendChild(p);
+      return;
+    }
+    // Tri du plus récent au plus ancien
+    codes.sort((a, b) => (codesCache[b].creeLe || 0) - (codesCache[a].creeLe || 0));
+
+    codes.forEach((code) => {
+      const c = codesCache[code] || {};
+      const estActif = c.actif !== false;
+
+      const row = document.createElement('div');
+      row.className = 'admin-row';
+
+      const infos = document.createElement('div');
+      infos.className = 'a-infos';
+
+      const texte = document.createElement('span');
+      const nameLine = document.createElement('span');
+      nameLine.className = 'a-name';
+      nameLine.textContent = code;
+      if (!estActif) {
+        const badge = document.createElement('span');
+        badge.className = 'admin-badge';
+        badge.style.background = '#8a8378';
+        badge.textContent = 'DÉSACTIVÉ';
+        nameLine.appendChild(badge);
+      }
+      const detailLine = document.createElement('span');
+      detailLine.className = 'a-email';
+      const connexions = c.connexions || 0;
+      detailLine.textContent = (c.formation || '—') + (c.client ? ' · ' + c.client : '') + ' · ' + connexions + ' connexion' + (connexions > 1 ? 's' : '');
+      texte.appendChild(nameLine);
+      texte.appendChild(document.createElement('br'));
+      texte.appendChild(detailLine);
+      infos.appendChild(texte);
+      row.appendChild(infos);
+
+      const btnGroup = document.createElement('div');
+      btnGroup.style.display = 'flex';
+      btnGroup.style.gap = '8px';
+
+      const copyBtn = document.createElement('button');
+      copyBtn.type = 'button';
+      copyBtn.className = 'admin-toggle-btn';
+      copyBtn.textContent = 'Copier';
+      copyBtn.addEventListener('click', () => {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code).then(() => notifier('Copié', 'Le code ' + code + ' a été copié.')).catch(() => {});
+        }
+      });
+      btnGroup.appendChild(copyBtn);
+
+      const toggleBtn = document.createElement('button');
+      toggleBtn.type = 'button';
+      toggleBtn.className = 'admin-toggle-btn' + (estActif ? ' is-admin' : '');
+      toggleBtn.textContent = estActif ? 'Désactiver' : 'Réactiver';
+      toggleBtn.addEventListener('click', () => basculerCodeActif(code, estActif));
+      btnGroup.appendChild(toggleBtn);
+
+      row.appendChild(btnGroup);
+      codesList.appendChild(row);
+    });
+  }
+
+  async function basculerCodeActif(code, estActuellementActif) {
+    try {
+      await update(ref(rtdb, 'formationCodes/' + code), { actif: !estActuellementActif });
+    } catch (err) {
+      notifier('Erreur', "Impossible de modifier ce code. Réessayez.");
+    }
+  }
+
+  function renderUtilisateursList() {
+    if (!utilisateursList) return;
+    utilisateursList.innerHTML = '';
+    const codes = Object.keys(codesCache);
+    if (codes.length === 0) {
+      const p = document.createElement('p');
+      p.className = 'forum-empty';
+      p.textContent = 'Aucun utilisateur pour le moment.';
+      utilisateursList.appendChild(p);
+      return;
+    }
+    // Tri alphabétique par nom de client (les codes sans nom à la fin), puis par date
+    codes.sort((a, b) => {
+      const ca = codesCache[a] || {}, cb = codesCache[b] || {};
+      const na = (ca.client || '').trim(), nb = (cb.client || '').trim();
+      if (!!na !== !!nb) return na ? -1 : 1;
+      if (na && nb && na !== nb) return na.localeCompare(nb);
+      return (cb.creeLe || 0) - (ca.creeLe || 0);
+    });
+
+    codes.forEach((code) => {
+      const c = codesCache[code] || {};
+      const estActif = c.actif !== false;
+
+      const row = document.createElement('div');
+      row.className = 'admin-row';
+
+      const infos = document.createElement('div');
+      infos.className = 'a-infos';
+
+      const texte = document.createElement('span');
+      const nameLine = document.createElement('span');
+      nameLine.className = 'a-name';
+      nameLine.textContent = c.client || 'Nom non renseigné';
+      if (!estActif) {
+        const badge = document.createElement('span');
+        badge.className = 'admin-badge';
+        badge.style.background = '#8a8378';
+        badge.textContent = 'DÉSACTIVÉ';
+        nameLine.appendChild(badge);
+      }
+      const detailLine = document.createElement('span');
+      detailLine.className = 'a-email';
+      detailLine.innerHTML = (c.formation || '—') + ' · code <span style="font-family:\'JetBrains Mono\',monospace;">' + code + '</span>';
+      texte.appendChild(nameLine);
+      texte.appendChild(document.createElement('br'));
+      texte.appendChild(detailLine);
+      infos.appendChild(texte);
+      row.appendChild(infos);
+
+      const toggleBtn = document.createElement('button');
+      toggleBtn.type = 'button';
+      toggleBtn.className = 'admin-toggle-btn' + (estActif ? ' is-admin' : '');
+      toggleBtn.textContent = estActif ? 'Désactiver' : 'Réactiver';
+      toggleBtn.addEventListener('click', () => basculerCodeActif(code, estActif));
+      row.appendChild(toggleBtn);
+
+      utilisateursList.appendChild(row);
+    });
+  }
+
+  function demarrerEcouteCodes() {
+    if (unsubCodes) unsubCodes();
+    unsubCodes = onValue(ref(rtdb, 'formationCodes'), (snap) => {
+      codesCache = snap.val() || {};
+      renderCodesList();
+      renderUtilisateursList();
+    });
+  }
+
+  // ==================== DEMANDES DE CODE (depuis le catalogue public) ====================
+  function renderDemandesList() {
+    if (!demandesList) return;
+    demandesList.innerHTML = '';
+    const ids = Object.keys(demandesCache).filter((id) => (demandesCache[id] || {}).statut !== 'traite');
+
+    if (demandesTabBadge) {
+      demandesTabBadge.hidden = ids.length === 0;
+      demandesTabBadge.textContent = String(ids.length);
+    }
+
+    if (ids.length === 0) {
+      const p = document.createElement('p');
+      p.className = 'forum-empty';
+      p.textContent = 'Aucune demande de code pour le moment.';
+      demandesList.appendChild(p);
+      return;
+    }
+    // Tri du plus récent au plus ancien
+    ids.sort((a, b) => (demandesCache[b].dateCreation || 0) - (demandesCache[a].dateCreation || 0));
+
+    ids.forEach((id) => {
+      const d = demandesCache[id] || {};
+
+      const row = document.createElement('div');
+      row.className = 'admin-row';
+
+      const infos = document.createElement('div');
+      infos.className = 'a-infos';
+
+      const texte = document.createElement('span');
+      const nameLine = document.createElement('span');
+      nameLine.className = 'a-name';
+      nameLine.textContent = d.nom || 'Nom non renseigné';
+      const detailLine = document.createElement('span');
+      detailLine.className = 'a-email';
+      const dateTxt = d.dateCreation ? new Date(d.dateCreation).toLocaleString('fr-FR') : '';
+      detailLine.textContent = (d.formation || '—') + (d.telephone ? ' · ' + d.telephone : '') + (dateTxt ? ' · ' + dateTxt : '');
+      texte.appendChild(nameLine);
+      texte.appendChild(document.createElement('br'));
+      texte.appendChild(detailLine);
+      infos.appendChild(texte);
+      row.appendChild(infos);
+
+      const btnGroup = document.createElement('div');
+      btnGroup.style.display = 'flex';
+      btnGroup.style.gap = '8px';
+
+      const genererBtn = document.createElement('button');
+      genererBtn.type = 'button';
+      genererBtn.className = 'admin-toggle-btn is-admin';
+      genererBtn.textContent = 'Générer le code';
+      genererBtn.addEventListener('click', () => preremplirGenerationDepuisDemande(d));
+      btnGroup.appendChild(genererBtn);
+
+      const traiteBtn = document.createElement('button');
+      traiteBtn.type = 'button';
+      traiteBtn.className = 'admin-toggle-btn';
+      traiteBtn.textContent = 'Marquer traitée';
+      traiteBtn.addEventListener('click', () => marquerDemandeTraitee(id));
+      btnGroup.appendChild(traiteBtn);
+
+      row.appendChild(btnGroup);
+      demandesList.appendChild(row);
+    });
+  }
+
+  function preremplirGenerationDepuisDemande(demande) {
+    activerOngletEspaceAdmin('codes');
+    if (codeGenFormation && demande.formation) codeGenFormation.value = demande.formation;
+    if (codeGenClient) codeGenClient.value = demande.nom || '';
+    if (codeGenFormation) codeGenFormation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  async function marquerDemandeTraitee(id) {
+    try {
+      await update(ref(rtdb, 'demandesCodes/' + id), { statut: 'traite' });
+    } catch (err) {
+      notifier('Erreur', "Impossible de mettre à jour cette demande. Réessayez.");
+    }
+  }
+
+  function demarrerEcouteDemandes() {
+    if (unsubDemandes) unsubDemandes();
+    unsubDemandes = onValue(ref(rtdb, 'demandesCodes'), (snap) => {
+      demandesCache = snap.val() || {};
+      renderDemandesList();
     });
   }
 
